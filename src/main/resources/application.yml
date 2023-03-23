@@ -1,0 +1,2 @@
+cors:
+  originPatterns: http://localhost:3000
