@@ -1,6 +1,6 @@
 package com.project.yourscore.Controllers
 
-import com.project.yourscore.Services.GetStandingsService
+import com.project.yourscore.Services.APIFetch.GetStandingsService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

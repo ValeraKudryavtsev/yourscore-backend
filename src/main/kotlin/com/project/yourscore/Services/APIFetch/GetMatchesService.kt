@@ -1,4 +1,4 @@
-package com.project.yourscore.Services
+package com.project.yourscore.Services.APIFetch
 
 import org.springframework.stereotype.Service
 import java.net.URI
