@@ -1,2 +1,18 @@
+spring:
+  mail:
+    host: smtp.yandex.ru
+    username: valera.kudryavtsev.nsk@yandex.ru
+    password: "bqiztjfisyvynodu" # специальный пароль для приложения (см. Яндекс Account)
+    port: 465
+    protocol: smtps
+    test-connection: true # проверка подключения при старте приложения
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/yourscore
+    username: root
+    password: root
+
 cors:
   originPatterns: http://localhost:3000

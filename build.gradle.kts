@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.0.4"
-	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("jvm") version "1.7.22"
-	kotlin("plugin.spring") version "1.7.22"
+	id("org.springframework.boot") version "2.6.1"
+	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	kotlin("jvm") version "1.6.0"
+	kotlin("plugin.spring") version "1.6.0"
 }
 
 group = "com.project"
@@ -19,7 +19,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	// Tests
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// MySQL Support
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("mysql:mysql-connector-java")
 }
 
 tasks.withType<KotlinCompile> {
