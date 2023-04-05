@@ -20,6 +20,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	// Security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
+	implementation("org.springframework.security:spring-security-crypto:6.0.1")
 	// Tests
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// MySQL Support
