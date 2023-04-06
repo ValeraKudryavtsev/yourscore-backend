@@ -1,9 +1,9 @@
 package com.project.yourscore.Repos
 
 import com.project.yourscore.Domain.User
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepositoryInterface : CrudRepository<User, Long> {
+interface UserRepositoryInterface : JpaRepository<User, Long> {
 
     fun findUserByUsername(username: String) : User
 

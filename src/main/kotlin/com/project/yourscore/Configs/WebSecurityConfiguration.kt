@@ -1,32 +1,35 @@
 package com.project.yourscore.Configs
 
+import com.project.yourscore.Services.UserService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
-import org.springframework.http.HttpMethod
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
-import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.server.SecurityWebFilterChain
 
-@EnableWebFluxSecurity
-class WebSecurityConfiguration {
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
+    @Autowired
+    private val userService: UserService? = null
+
+    @Autowired
+    private val passwordEncoder: PasswordEncoder? = null
+
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
+    fun getPasswordEncoder(): PasswordEncoder? {
         return BCryptPasswordEncoder(8)
     }
 
-    @Bean
-    fun securityWebFilterChain(httpSecurity: ServerHttpSecurity): SecurityWebFilterChain {
-        return httpSecurity
-            .formLogin().and()
-            .httpBasic().disable()
-            .authorizeExchange()
-                // ***
-            .pathMatchers("/", "/login", "/signup").permitAll()
-                // ***
-            .pathMatchers(HttpMethod.POST, "/api/users").permitAll()
-            .anyExchange().authenticated()
-            .and()
-            .build()
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService<UserDetailsService>(userService)
+            .passwordEncoder(passwordEncoder)
     }
 }
