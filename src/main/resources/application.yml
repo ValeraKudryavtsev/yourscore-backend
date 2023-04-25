@@ -13,8 +13,7 @@ spring:
     url: jdbc:mysql://localhost:3306/yourscore
     username: root
     password: root
-  main:
-    allow-circular-references: true
-
 cors:
   originPatterns: http://localhost:3000
+football-api:
+  token: fe382c8a16f0430ca32f601d38888099

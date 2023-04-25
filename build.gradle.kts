@@ -21,6 +21,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	// Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	// Jwt token
+//	implementation("io.jsonwebtoken:jjwt-api:0.10.7")
+//	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.10.7")
+//	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.10.7")
+//	implementation("javax.xml.bind:jaxb-api:2.3.0")
 	// Password Encoder
 	implementation("org.springframework.security:spring-security-crypto")
 	// Tests
