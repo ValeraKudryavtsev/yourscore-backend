@@ -5,6 +5,7 @@ import com.project.yourscore.DataClasses.LoginRequest
 import com.project.yourscore.DataClasses.RegistrationData
 import com.project.yourscore.DataClasses.UpdateUserData
 import com.project.yourscore.Domain.User
+import com.project.yourscore.Services.AuthService
 import com.project.yourscore.Services.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -12,14 +13,13 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-//@CrossOrigin(origins = arrayOf("*"), maxAge = 3600)
 class UserController(
     private val userService: UserService,
+    private val authService: AuthService
 ) {
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     fun auth(@RequestBody loginRequest: LoginRequest): JwtResponse? {
-        return userService.getJwtDtoByAuthRequest(loginRequest)
+        return authService.getJwtDtoByAuthRequest(loginRequest)
     }
 
     @PostMapping("/registration")
@@ -30,6 +30,11 @@ class UserController(
     @GetMapping("/check/{username}")
     fun checkUsername(@PathVariable username: String): User? {
         return userService.checkUsername(username)
+    }
+
+    @GetMapping("/get")
+    fun getUserInfo() {
+
     }
 
     @PutMapping("/update")
