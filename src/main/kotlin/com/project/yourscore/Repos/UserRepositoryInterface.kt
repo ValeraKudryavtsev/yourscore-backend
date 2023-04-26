@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepositoryInterface : JpaRepository<User, Long> {
 
-    fun findUserByUsername(username: String) : User
+    fun findByUsername(username: String) : User?
 
-    fun findByActivationCode(activationCode: String) : User
+    fun findByActivationCode(activationCode: String) : User?
 }

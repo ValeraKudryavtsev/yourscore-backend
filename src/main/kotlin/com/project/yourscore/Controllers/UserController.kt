@@ -1,22 +1,35 @@
 package com.project.yourscore.Controllers
 
+import com.project.yourscore.DataClasses.JwtResponse
+import com.project.yourscore.DataClasses.LoginRequest
+import com.project.yourscore.DataClasses.RegistrationData
+import com.project.yourscore.DataClasses.UpdateUserData
 import com.project.yourscore.Domain.User
-import com.project.yourscore.LoginData
 import com.project.yourscore.Services.UserService
-import com.project.yourscore.UpdateUserData
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userService: UserService) {
-    @PostMapping("/registration")
-    fun registration(@RequestBody user: User): Boolean {
-        return userService.addUser(user)
+//@CrossOrigin(origins = arrayOf("*"), maxAge = 3600)
+class UserController(
+    private val userService: UserService,
+) {
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    fun auth(@RequestBody loginRequest: LoginRequest): JwtResponse? {
+        return userService.getJwtDtoByAuthRequest(loginRequest)
     }
 
-    @GetMapping("/login")
-    fun login(@RequestBody user: LoginData): User? {
-        return userService.loginUser(user)
+    @PostMapping("/registration")
+    fun registration(@RequestBody registrationData: RegistrationData): Boolean {
+        return userService.addUser(registrationData)
+    }
+
+    @GetMapping("/check/{username}")
+    fun checkUsername(@PathVariable username: String): User? {
+        return userService.checkUsername(username)
     }
 
     @PutMapping("/update")
@@ -24,14 +37,14 @@ class UserController(private val userService: UserService) {
         return userService.updateUser(user)
     }
 
-    @PutMapping("/{code}")
+    @PutMapping("/activate/{code}")
     fun activateUser(@PathVariable code: String): Boolean {
         return userService.activateUser(code)
     }
 
-    @DeleteMapping("/remove/{id}")
-    fun removeUser(@PathVariable id: Long): Boolean {
-        return userService.removeUser(id)
+    @DeleteMapping("/remove/{username}")
+    fun removeUser(@PathVariable username: String): Boolean {
+        return userService.removeUser(username)
     }
 
 }

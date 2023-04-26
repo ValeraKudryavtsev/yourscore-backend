@@ -1,35 +1,61 @@
 package com.project.yourscore.Configs
 
-import com.project.yourscore.Services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
+//@EnableWebSecurity
+class WebSecurityConfiguration(
     @Autowired
-    private val userService: UserService? = null
-
-    @Autowired
-    private val passwordEncoder: PasswordEncoder? = null
-
+    private var jwtFilter: JwtFilter
+) {
     @Bean
-    fun getPasswordEncoder(): PasswordEncoder? {
+    fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder(8)
     }
 
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService<UserDetailsService>(userService)
-            .passwordEncoder(passwordEncoder)
+    @Bean
+    fun doSecurityFilter(http: HttpSecurity): SecurityFilterChain? {
+        http.sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .cors().and().csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/error").permitAll()
+            .antMatchers(HttpMethod.POST, "/user/login").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin().disable()
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+        return http.build()
     }
+
+//    override fun configure(http: HttpSecurity) {
+//        http
+//            .csrf().disable()
+//            .authorizeRequests()
+//            .antMatchers("/user/registration", "/user/check/*", "/user/activate/*",
+//                "/standings/*", "/matches", "/scorers/*").permitAll()
+//            .anyRequest().authenticated()
+//            .and()
+//            .formLogin()
+//            .loginPage("/user/login")
+//            .permitAll()
+//            .and()
+//            .logout()
+//            .logoutSuccessUrl("/user/login?logout")
+//            .invalidateHttpSession(true)
+//            .permitAll()
+//    }
 }

@@ -1,26 +1,28 @@
 package com.project.yourscore.Domain
 
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
-class User: UserDetails {
+class User : UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    open val userId: Long = 0
-
-    private lateinit var username: String
-    private lateinit var password: String
-    lateinit var email: String
+    var userId: Long = 0
+    private var username: String = ""
+    private var password: String = ""
+    var email: String = ""
     var activationCode: String? = null
     var isActive: Boolean = false
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
-        return null
+    var role: Role? = null
+
+    override fun getAuthorities(): Collection<GrantedAuthority?> {
+        return listOf(SimpleGrantedAuthority(role?.name))
     }
 
     override fun getPassword(): String {
-        return password
+        return this.password
     }
 
     fun setPassword(password: String) {
@@ -28,7 +30,7 @@ class User: UserDetails {
     }
 
     override fun getUsername(): String {
-        return username
+        return this.username
     }
 
     fun setUsername(username: String) {
@@ -48,6 +50,6 @@ class User: UserDetails {
     }
 
     override fun isEnabled(): Boolean {
-        return isActive
+        return true
     }
 }
