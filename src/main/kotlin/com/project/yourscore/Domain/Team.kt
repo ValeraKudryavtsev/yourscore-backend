@@ -19,5 +19,5 @@ class Team {
     @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private var user: User? = null
+    lateinit var user: User
 }

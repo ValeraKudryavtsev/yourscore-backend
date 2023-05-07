@@ -21,4 +21,9 @@ class FootballApiController(private val footballApiService: FootballApiService) 
     fun getStandingsByCode(@PathVariable("code") code: String): String? {
         return footballApiService.getStandingsByCode(code)
     }
+
+    @GetMapping("/teams/{code}")
+    fun getTeamMatches(@PathVariable("code") code: String): String? {
+        return footballApiService.getTeamMatches(code)
+    }
 }

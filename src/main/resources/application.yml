@@ -13,6 +13,9 @@ spring:
     url: jdbc:mysql://localhost:3306/yourscore
     username: root
     password: root
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 cors:
   originPatterns: http://localhost:3000
 football-api:
@@ -20,3 +23,5 @@ football-api:
 jwt:
   secret-key: examplesupersecurekeyforencodinganddecodingtheHS256algorithm
   expiration-time: 86400000
+
+

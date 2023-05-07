@@ -36,4 +36,8 @@ class FootballApiService {
         return fetchApi("matches")
     }
 
+    fun getTeamMatches(code: String): String? {
+        return fetchApi("teams/${code}/matches")
+    }
+
 }
