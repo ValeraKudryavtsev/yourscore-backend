@@ -11,15 +11,16 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Service
 class AuthService(
@@ -41,7 +42,7 @@ class AuthService(
             .compact()
     }
 
-    private fun verifyTokenAndGetJws(token: String): Jws<Claims> {
+    fun verifyTokenAndGetJws(token: String): Jws<Claims> {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token)
     }
 
@@ -57,9 +58,9 @@ class AuthService(
     }
 
     fun getJwtDtoByAuthRequest(loginRequest: LoginRequest): JwtResponse? {
-        val user: UserDetails = userRepositoryInterface.findByUsername(loginRequest.username) as UserDetails
+        val user: User = userRepositoryInterface.findByUsername(loginRequest.username) as User
         val authPassword: String = loginRequest.password
-        return if (BCryptPasswordEncoder(8).matches(authPassword, user.password)) {
+        return if (BCryptPasswordEncoder(8).matches(authPassword, user.password) && user.isActive) {
             val token = getTokenForUser(user)
             val jws: Jws<Claims> = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token)
             val zoneId = ZoneId.systemDefault()
@@ -69,5 +70,10 @@ class AuthService(
         } else {
             throw RuntimeException("Authentication error!")
         }
+    }
+
+    fun getUsernameByRequest(request: HttpServletRequest): String {
+        val token: String = request.getHeader(HttpHeaders.AUTHORIZATION)
+        return verifyTokenAndGetJws(token).body.get("username", String::class.java)
     }
 }

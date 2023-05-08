@@ -14,6 +14,7 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Service
 class UserService(
@@ -59,6 +61,10 @@ class UserService(
         return userFromDb
     }
 
+    fun getUserInfo(username: String): User? {
+        return userRepositoryInterface.findByUsername(username)
+    }
+
     fun removeUser(username: String): Boolean {
         val userFromDb = userRepositoryInterface.findByUsername(username) ?: return false
 
@@ -67,12 +73,29 @@ class UserService(
         return true
     }
 
-    fun updateUser(updateUserData: UpdateUserData): Boolean {
-        val userFromDb = userRepositoryInterface.findByUsername(updateUserData.username) ?: return false
+    fun updateUsername(username: String, newUsername: String): Boolean {
+        val userFromDb = userRepositoryInterface.findByUsername(username) ?: return false
 
-        userFromDb.username = updateUserData.username
-        userFromDb.password = BCryptPasswordEncoder(8).encode(updateUserData.password)
-        userFromDb.email = updateUserData.email
+        userFromDb.username = newUsername
+        userRepositoryInterface.save(userFromDb)
+
+        return true
+    }
+
+    fun updateEmail(username: String, email: String): Boolean {
+        val userFromDb = userRepositoryInterface.findByUsername(username) ?: return false
+
+        userFromDb.email = email
+        userRepositoryInterface.save(userFromDb)
+
+        return true
+    }
+
+    fun updatePassword(username: String, password: String): Boolean {
+        val userFromDb = userRepositoryInterface.findByUsername(username) ?: return false
+
+        userFromDb.password = BCryptPasswordEncoder(8).encode(password)
+        userRepositoryInterface.save(userFromDb)
 
         return true
     }

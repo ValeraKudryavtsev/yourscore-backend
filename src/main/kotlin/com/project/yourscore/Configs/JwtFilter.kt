@@ -1,6 +1,6 @@
 package com.project.yourscore.Configs
 
-import com.project.yourscore.Services.UserService
+import com.project.yourscore.Services.AuthService
 import lombok.extern.slf4j.Slf4j
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 @Slf4j
-class JwtFilter(private var userService: UserService) : OncePerRequestFilter() {
+class JwtFilter(private var authService: AuthService) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -20,7 +20,7 @@ class JwtFilter(private var userService: UserService) : OncePerRequestFilter() {
         val token: String? = request.getHeader(HttpHeaders.AUTHORIZATION)
         if (token != null && "" != token) {
             try {
-                userService.authorizeUserByToken(token)
+                authService.authorizeUserByToken(token)
             } catch (e: Exception) {
                 val message = e.message
                 println(message)

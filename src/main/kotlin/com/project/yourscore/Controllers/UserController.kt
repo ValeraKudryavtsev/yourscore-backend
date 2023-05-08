@@ -7,8 +7,9 @@ import com.project.yourscore.DataClasses.UpdateUserData
 import com.project.yourscore.Domain.User
 import com.project.yourscore.Services.AuthService
 import com.project.yourscore.Services.UserService
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 
 @RestController
@@ -33,13 +34,27 @@ class UserController(
     }
 
     @GetMapping("/get")
-    fun getUserInfo() {
-
+    fun getUserInfo(request: HttpServletRequest): User? {
+        val username = authService.getUsernameByRequest(request)
+        return userService.getUserInfo(username)
     }
 
-    @PutMapping("/update")
-    fun updateUser(@RequestBody user: UpdateUserData): Boolean {
-        return userService.updateUser(user)
+    @PutMapping("/update-username/{new}")
+    fun updateUsername(request: HttpServletRequest, @PathVariable new: String): Boolean {
+        val username = authService.getUsernameByRequest(request)
+        return userService.updateUsername(username, new)
+    }
+
+    @PutMapping("/update-email/{email}")
+    fun updateEmail(request: HttpServletRequest, @PathVariable email: String): Boolean {
+        val username = authService.getUsernameByRequest(request)
+        return userService.updateEmail(username, email)
+    }
+
+    @PutMapping("/update-password/{password}")
+    fun updatePassword(request: HttpServletRequest, @PathVariable password: String): Boolean {
+        val username = authService.getUsernameByRequest(request)
+        return userService.updatePassword(username, password)
     }
 
     @PutMapping("/activate/{code}")
@@ -47,8 +62,9 @@ class UserController(
         return userService.activateUser(code)
     }
 
-    @DeleteMapping("/remove/{username}")
-    fun removeUser(@PathVariable username: String): Boolean {
+    @DeleteMapping("/remove")
+    fun removeUser(request: HttpServletRequest): Boolean {
+        val username = authService.getUsernameByRequest(request)
         return userService.removeUser(username)
     }
 

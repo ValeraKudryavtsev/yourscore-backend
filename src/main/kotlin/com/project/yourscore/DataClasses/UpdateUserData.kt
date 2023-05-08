@@ -1,4 +1,4 @@
-package com.project.yourscore
+package com.project.yourscore.DataClasses
 
 data class UpdateUserData(
     var username: String,
