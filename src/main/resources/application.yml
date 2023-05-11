@@ -12,7 +12,7 @@ spring:
   datasource:
     url: jdbc:mysql://boqqtsaulxybtme7nwbf-mysql.services.clever-cloud.com:3306/boqqtsaulxybtme7nwbf
     username: uhotftuiwh5lpbzn
-    password: nGAYKlkAYyjrWmWh7TCB
+    password: UQthQlCfXqo0BND4wMsG
 cors:
   originPatterns: http://localhost:3000
 football-api:
