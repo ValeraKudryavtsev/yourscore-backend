@@ -10,9 +10,9 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://boqqtsaulxybtme7nwbf-mysql.services.clever-cloud.com:3306/boqqtsaulxybtme7nwbf
-    username: uhotftuiwh5lpbzn
-    password: UQthQlCfXqo0BND4wMsG
+    url: jdbc:mysql://containers-us-west-45.railway.app:5947/railway
+    username: root
+    password: 3aZYs3E5kyF5a9LQUe1K
 cors:
   originPatterns: http://localhost:3000
 football-api:
