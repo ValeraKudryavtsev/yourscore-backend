@@ -1,3 +1,9 @@
 FROM openjdk:17
-COPY build/libs/yourscore-0.0.1-SNAPSHOT.jar yourscore-0.0.1.jar
-ENTRYPOINT ["java", "-jar", "yourscore-0.0.1.jar"]
+
+EXPOSE 8080
+
+RUN mkdir /app
+
+COPY build/libs/*.jar /app/spring-boot-application.jar
+
+ENTRYPOINT ["java", "-jar", "/app/spring-boot-application.jar"]

@@ -1,0 +1,24 @@
+spring:
+  mail:
+    host: smtp.yandex.ru
+    username: valera.kudryavtsev.nsk@yandex.ru
+    password: "bqiztjfisyvynodu" # специальный пароль для приложения (см. Яндекс Account)
+    port: 465
+    protocol: smtps
+    test-connection: true # проверка подключения при старте приложения
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://boqqtsaulxybtme7nwbf-mysql.services.clever-cloud.com:3306/boqqtsaulxybtme7nwbf
+    username: uhotftuiwh5lpbzn
+    password: nGAYKlkAYyjrWmWh7TCB
+cors:
+  originPatterns: http://localhost:3000
+football-api:
+  token: fe382c8a16f0430ca32f601d38888099
+jwt:
+  secret-key: examplesupersecurekeyforencodinganddecodingtheHS256algorithm
+  expiration-time: 86400000
+
+
