@@ -50,7 +50,7 @@ class UserService(
         emailService.sendEmail(
             user.email,
             "Activation Account",
-            "Hi, ${user.username}!\nFollow this link to activate YourScore account: http://localhost:3000/user/${user.activationCode}"
+            "Hi, ${user.username}!\nFollow this link to activate YourScore account: https://yourscore.onrender.com/user/${user.activationCode}"
         )
 
         return true
